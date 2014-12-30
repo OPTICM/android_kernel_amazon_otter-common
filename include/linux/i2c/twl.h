@@ -439,28 +439,6 @@ int twl6030_unregister_notifier(struct notifier_block *nb,
 #define TWL5031_INTERRUPTS_BCIEDR2	0x6
 #define TWL5031_INTERRUPTS_BCISIHCTRL	0x7
 
-#ifdef CONFIG_MACH_OMAP_4430_KC1
-#define CONTROLLER_INT_MASK	0x00
-#define CONTROLLER_CTRL1	0x01
-#define CONTROLLER_WDG		0x02
-#define CONTROLLER_STAT1	0x03
-#define CHARGERUSB_INT_STATUS	0x04
-#define CHARGERUSB_INT_MASK	0x05
-#define CHARGERUSB_STATUS_INT1	0x06
-#define CHARGERUSB_STATUS_INT2	0x07
-#define CHARGERUSB_CTRL1	0x08
-#define CHARGERUSB_CTRL2	0x09
-#define CHARGERUSB_CTRL3	0x0A
-#define CHARGERUSB_STAT1	0x0B
-#define CHARGERUSB_VOREG	0x0C
-#define CHARGERUSB_VICHRG	0x0D
-#define CHARGERUSB_CINLIMIT	0x0E
-#define CHARGERUSB_CTRLLIMIT1	0x0F
-#define CHARGERUSB_CTRLLIMIT2	0x10
-#define ANTICOLLAPSE_CTRL1	0x11
-#define ANTICOLLAPSE_CTRL2	0x12
-#endif
-
 /*----------------------------------------------------------------------*/
 
 /*
@@ -688,6 +666,8 @@ struct twl4030_bci_platform_data {
 	unsigned long features;
 
 	unsigned long errata;
+
+	struct cell_config *cell_cfg;
 };
 
 /* TWL4030_GPIO_MAX (18) GPIOs, with interrupts */
@@ -749,8 +729,6 @@ struct twl4030_usb_data {
 	int		(*phy_exit)(struct device *dev);
 	/* Power on/off the PHY */
 	int		(*phy_power)(struct device *dev, int iD, int on);
-	/* enable/disable  phy clocks */
-	int		(*phy_set_clock)(struct device *dev, int on);
 	/* suspend/resume of phy */
 	int		(*phy_suspend)(struct device *dev, int suspend);
 };
@@ -1021,5 +999,7 @@ static inline int twl4030charger_usb_en(int enable) { return 0; }
 #define TWL6032_PREQ1_RES_ASS_A	0xd7
 
 #define TWL6032_ERRATA_DB00119490	(1 << 0)
+#define TWL6030_ERRATA_DB00112620	(1 << 1)
+#define TWL6030_ERRATA_DB00110684	(1 << 2)
 
 #endif /* End of __TWL4030_H */
